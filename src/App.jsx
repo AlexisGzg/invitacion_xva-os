@@ -241,8 +241,8 @@ const SectionDivider = ({ butterfly }) => (
   <motion.div
     initial={{ opacity: 0, scaleX: 0.65 }}
     whileInView={{ opacity: 1, scaleX: 1 }}
-    viewport={{ once: false, amount: 0.8 }}
-    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    viewport={{ once: false, amount: 0.15 }}
+    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     className="relative flex w-full max-w-[680px] items-center justify-center text-[#b695c0]/80 my-2"
     aria-hidden="true"
   >
@@ -344,7 +344,7 @@ const EventCalendar = ({ sectionItem }) => {
                     initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
                     whileInView={{ opacity: 0.95, scale: 1, rotate: 0 }}
                     viewport={{ once: false }}
-                    transition={{ duration: 0.45, delay: (day % 7) * 0.03 }}
+                    transition={{ duration: 0.3 }}
                     className="pointer-events-none absolute -right-0.5 -top-1 z-20 h-[15px] w-[15px] drop-shadow-[0_2px_3px_rgba(74,62,77,0.25)] sm:h-[18px] sm:w-[18px]"
                   />
                 )}
@@ -529,8 +529,8 @@ function App() {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: shouldReduceMotion ? 0.04 : 0.14,
-        delayChildren: 0.08
+        staggerChildren: shouldReduceMotion ? 0.02 : 0.05,
+        delayChildren: 0
       }
     }
   };
@@ -545,19 +545,18 @@ function App() {
         : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
     }
   };
-  const pieceViewport = { once: false, amount: 0.2, margin: "0px 0px -10% 0px" };
+  const pieceViewport = { once: false, amount: 0.15 };
   const pieceEase = [0.22, 1, 0.36, 1];
 
   const elegantPiece = {
-    hidden: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.985, filter: 'blur(6px)' },
+    hidden: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.985 },
     visible: {
       opacity: 1,
       x: 0,
       y: 0,
       scale: 1,
       rotate: 0,
-      filter: 'blur(0px)',
-      transition: { duration: shouldReduceMotion ? 0.25 : 0.9, ease: pieceEase },
+      transition: { duration: shouldReduceMotion ? 0.25 : 0.6, ease: pieceEase, delay: 0 },
     },
   };
 
@@ -571,7 +570,6 @@ function App() {
   const piece = (variants = elegantPiece) => ({
     variants,
     initial: 'hidden',
-    animate: 'hidden',
     whileInView: 'visible',
     viewport: pieceViewport,
   });
@@ -1170,8 +1168,8 @@ function App() {
       </div>
 
       {/* FLORES INFERIORES (en capa z-10 para no tapar texto) */}
-      <motion.img initial={{ opacity: 0, y: 12 }} animate={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} src={inferiorIzquierdo} alt="" loading="lazy" decoding="async" className="absolute bottom-0 left-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
-      <motion.img initial={{ opacity: 0, y: 12 }} animate={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} src={inferiorDerecho} alt="" loading="lazy" decoding="async" className="absolute bottom-0 right-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
+      <motion.img initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} src={inferiorIzquierdo} alt="" loading="lazy" decoding="async" className="absolute bottom-0 left-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
+      <motion.img initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} src={inferiorDerecho} alt="" loading="lazy" decoding="async" className="absolute bottom-0 right-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
     </div>
   );
 }
