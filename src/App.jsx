@@ -744,9 +744,9 @@ function App() {
                   <span className="font-serif text-sm font-semibold uppercase tracking-[0.25em] text-[#6b5b72] sm:text-base">Mis Padres</span>
                   <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#d4af37]/60" />
                 </div>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">MARIA LUISA GREGORIO BOLAÑOS</p>
+                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">MARIA LUISA GREGORIO BOLAÑOS</p>
                 <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">SANTIAGO OJEDA SANCHEZ</p>
+                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">SANTIAGO OJEDA SANCHEZ</p>
               </motion.div>
 
               <span
@@ -760,11 +760,11 @@ function App() {
                   <span className="font-serif text-sm font-semibold uppercase tracking-[0.25em] text-[#6b5b72] sm:text-base">Mis Padrinos</span>
                   <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#d4af37]/60" />
                 </div>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">Laura Gregorio</p>
+                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">Laura Gregorio</p>
                 <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">Martín Durán</p>
+                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">Martín Durán</p>
                 <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">JOSÉ MANUEL OLIVARES GARAY</p>
+                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">JOSÉ MANUEL OLIVARES GARAY</p>
               </motion.div>
             </div>
           </section>
