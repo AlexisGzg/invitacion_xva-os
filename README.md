@@ -180,3 +180,5 @@ npm run preview
 El resultado listo para subir a un hosting está en la carpeta `dist/`.
 
 Puede publicarse en Vercel, Netlify, GitHub Pages u otro alojamiento que sirva archivos estáticos. Para un dominio o subdirectorio personalizado, revisa la configuración `base` de `vite.config.js`.
+
+En Vercel, `vercel.json` configura caché de un año para los archivos con nombre versionado que Vite genera en `dist/assets/`; el HTML se revalida para que cada publicación muestre la versión nueva.

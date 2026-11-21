@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap');
 
 @theme {
   --color-dress: #b695c0;
@@ -48,11 +47,6 @@ body {
 
 .photo-carousel-track::-webkit-scrollbar {
   display: none;
-}
-
-.background-particles {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent calc(100svh + 3rem), #000 calc(100svh + 8rem));
-  mask-image: linear-gradient(to bottom, transparent 0, transparent calc(100svh + 3rem), #000 calc(100svh + 8rem));
 }
 
 @media (prefers-reduced-motion: reduce) {

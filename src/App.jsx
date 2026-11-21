@@ -1,63 +1,85 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, Fragment } from 'react';
 import { motion, AnimatePresence, useInView, useReducedMotion } from 'framer-motion';
-import ovalMarco from './assets/ovalMraco.png';
-import coronaImg from './assets/coronaReal1.png';
+import ovalMarco from './assets/ovalMraco.webp';
+import coronaImg from './assets/coronaReal1.webp';
 
 // 💌 Sobre de portada
-import sobrePortada from './assets/sobre.jpg';
+import sobrePortada from './assets/sobre-1080.webp';
+import sobrePortada640 from './assets/sobre-640.webp';
 
 // 🎵 Música
-import audioSong from './assets/cancion.mp3';
+import audioSong from './assets/cancion-optimized.mp3';
 
 // 🦋 Mariposas
-import mariposa1 from './assets/mariposaDere.png';
-import mariposa2 from './assets/mariposaDere2.png';
-import mariposa4 from './assets/mariposaIzq.png';
-import mariposa5 from './assets/mariposaIzq_dch.png';
-import mariposa6 from './assets/mariposamedio1.png';
-import mariposa7 from './assets/mariposamedio2.png';
-import mariposa8 from './assets/mariposamedio3.png';
-import mariposa9 from './assets/mariposamedioG.png';
-import mariposa10 from './assets/mariposasIzqmedia.png';
+import mariposa1 from './assets/mariposaDere.webp';
+import mariposa2 from './assets/mariposaDere2.webp';
+import mariposa4 from './assets/mariposaIzq.webp';
+import mariposa5 from './assets/mariposaIzq_dch.webp';
+import mariposa6 from './assets/mariposamedio1.webp';
+import mariposa7 from './assets/mariposamedio2.webp';
+import mariposa8 from './assets/mariposamedio3.webp';
+import mariposa9 from './assets/mariposamedioG.webp';
+import mariposa10 from './assets/mariposasIzqmedia.webp';
 
 // 🌸 Flores
-import inferiorDerecho from './assets/florInferiorDerecho.png';
-import inferiorIzquierdo from './assets/florInferiorIzquierdo.png';
-import superiorDerecho from './assets/florSuperiorDerecho.png';
-import superiorIzquierdo from './assets/florSuperiorIzquierdo.png';
-import itinerario1 from './assets/itinerario_1.png';
-import itinerario2 from './assets/itinerario_2.png';
-import itinerario3 from './assets/itinerario_3.png';
-import itinerario4 from './assets/itinerario_4.png';
-import itinerario5 from './assets/itinerario_5.png';
-import iconoRegalo from './assets/extra_5.png';
-import fotoPeque1 from './assets/img/img_peque.jpeg';
-import fotoPeque2 from './assets/img/img_peque2.jpeg';
-import fotoMediana1 from './assets/img/img_mediana.jpeg';
-import fotoMediana2 from './assets/img/img_mediana2.jpeg';
-import fotoImg1 from './assets/img/img1.jpeg';
-import fotoImg2 from './assets/img/img2.jpeg';
+import inferiorDerecho from './assets/florInferiorDerecho.webp';
+import inferiorIzquierdo from './assets/florInferiorIzquierdo.webp';
+import superiorDerecho from './assets/florSuperiorDerecho.webp';
+import superiorIzquierdo from './assets/florSuperiorIzquierdo.webp';
+import itinerario1 from './assets/itinerario_1.webp';
+import itinerario2 from './assets/itinerario_2.webp';
+import itinerario3 from './assets/itinerario_3.webp';
+import itinerario4 from './assets/itinerario_4.webp';
+import itinerario5 from './assets/itinerario_5.webp';
+import iconoRegalo from './assets/extra_5.webp';
+import fotoPeque1 from './assets/img/img_peque.webp';
+import fotoPeque2 from './assets/img/img_peque2.webp';
+import fotoMediana1 from './assets/img/img_mediana.webp';
+import fotoMediana2 from './assets/img/img_mediana2.webp';
+import fotoImg1 from './assets/img/img1.webp';
+import fotoImg2 from './assets/img/img2.webp';
+import fotoPeque1Small from './assets/img/img_peque-480.webp';
+import fotoPeque1Large from './assets/img/img_peque-800.webp';
+import fotoPeque2Small from './assets/img/img_peque2-480.webp';
+import fotoPeque2Large from './assets/img/img_peque2-800.webp';
+import fotoMediana1Small from './assets/img/img_mediana-480.webp';
+import fotoMediana1Large from './assets/img/img_mediana-800.webp';
+import fotoMediana2Small from './assets/img/img_mediana2-480.webp';
+import fotoMediana2Large from './assets/img/img_mediana2-800.webp';
+import fotoImg1Small from './assets/img/img1-480.webp';
+import fotoImg1Large from './assets/img/img1-800.webp';
+import fotoImg2Small from './assets/img/img2-480.webp';
+import fotoImg2Large from './assets/img/img2-800.webp';
 
 // 🌟 Partículas de Fondo
-const BackgroundParticles = () => {
+const BackgroundParticles = ({ active }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    if (!active || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let animationFrameId;
+    if (!ctx) return;
 
+    let animationFrameId;
+    let lastRenderAt = 0;
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
     const resizeCanvas = () => {
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
+      canvasWidth = window.innerWidth;
+      canvasHeight = window.innerHeight;
+      canvas.width = Math.round(canvasWidth * pixelRatio);
+      canvas.height = Math.round(canvasHeight * pixelRatio);
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     };
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
 
-    const particles = Array.from({ length: 96 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
+    const particles = Array.from({ length: canvasWidth < 640 ? 36 : 56 }, () => ({
+      x: Math.random() * canvasWidth,
+      y: Math.random() * canvasHeight,
       radius: Math.random() * 2 + 1,
       color: ['rgba(255, 249, 226, 0.75)', 'rgba(212, 175, 55, 0.58)', 'rgba(182, 149, 192, 0.5)'][Math.floor(Math.random() * 3)],
       shape: Math.random() < 0.18 ? 'star' : 'dot',
@@ -67,13 +89,19 @@ const BackgroundParticles = () => {
       phase: Math.random() * Math.PI * 2
     }));
 
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const render = (timestamp) => {
+      if (timestamp - lastRenderAt < 1000 / 30) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      lastRenderAt = timestamp;
+
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       particles.forEach(p => {
         p.y += p.vy;
         p.x += p.vx;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.x < 0 || p.x > canvas.width) p.x = Math.random() * canvas.width;
+        if (p.y < 0) p.y = canvasHeight;
+        if (p.x < 0 || p.x > canvasWidth) p.x = Math.random() * canvasWidth;
 
         const shimmer = 0.65 + Math.sin(performance.now() * 0.002 + p.phase) * 0.35;
         ctx.fillStyle = p.color;
@@ -101,15 +129,37 @@ const BackgroundParticles = () => {
       ctx.globalAlpha = 1;
       animationFrameId = requestAnimationFrame(render);
     };
-    render();
+    const startAnimation = () => {
+      if (document.visibilityState === 'visible' && animationFrameId === undefined) {
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+    const stopAnimation = () => {
+      if (animationFrameId !== undefined) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = undefined;
+      }
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    };
+
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    startAnimation();
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      stopAnimation();
     };
-  }, []);
+  }, [active]);
 
-  return <canvas ref={canvasRef} className="background-particles absolute inset-0 pointer-events-none z-0" />;
+  return <canvas ref={canvasRef} className="background-particles fixed inset-0 pointer-events-none z-0" />;
 };
 
 const CursorSparkles = ({ active }) => {
@@ -288,6 +338,8 @@ const EventCalendar = ({ sectionItem }) => {
                   <motion.img
                     src={mariposa6}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     aria-hidden="true"
                     initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
                     whileInView={{ opacity: 0.95, scale: 1, rotate: 0 }}
@@ -300,6 +352,8 @@ const EventCalendar = ({ sectionItem }) => {
                   <motion.img
                     src={mariposa8}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     aria-hidden="true"
                     animate={{ y: [0, -2, 0], rotate: [-4, 4, -4] }}
                     transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}
@@ -329,12 +383,12 @@ const WHATSAPP_NUMBER = '525532307675'; // Número de prueba (cámbialo luego po
 const RSVP_MESSAGE = 'Hola, confirmo mi asistencia para los XV de Johana Estefania.';
 
 const GALLERY_SLIDES = [
-  { title: 'Mis Recuerdos', subtitle: 'Un instante que vive para siempre', image: fotoPeque1 },
-  { title: 'Momentos Especiales', subtitle: 'Sonrisas que iluminan el corazón', image: fotoPeque2 },
-  { title: 'Sueños y Alegría', subtitle: 'La magia de celebrar tus XV', image: fotoMediana1 },
-  { title: 'Instantes Inolvidables', subtitle: 'Recuerdos que guardo con amor', image: fotoMediana2 },
-  { title: 'Dulces Sonrisas', subtitle: 'Instantes llenos de ilusión', image: fotoImg1 },
-  { title: 'Recuerdos de Amor', subtitle: 'Momentos para atesorar siempre', image: fotoImg2 },
+  { title: 'Mis Recuerdos', subtitle: 'Un instante que vive para siempre', image: fotoPeque1, imageSmall: fotoPeque1Small, imageLarge: fotoPeque1Large },
+  { title: 'Momentos Especiales', subtitle: 'Sonrisas que iluminan el corazón', image: fotoPeque2, imageSmall: fotoPeque2Small, imageLarge: fotoPeque2Large },
+  { title: 'Sueños y Alegría', subtitle: 'La magia de celebrar tus XV', image: fotoMediana1, imageSmall: fotoMediana1Small, imageLarge: fotoMediana1Large },
+  { title: 'Instantes Inolvidables', subtitle: 'Recuerdos que guardo con amor', image: fotoMediana2, imageSmall: fotoMediana2Small, imageLarge: fotoMediana2Large },
+  { title: 'Dulces Sonrisas', subtitle: 'Instantes llenos de ilusión', image: fotoImg1, imageSmall: fotoImg1Small, imageLarge: fotoImg1Large },
+  { title: 'Recuerdos de Amor', subtitle: 'Momentos para atesorar siempre', image: fotoImg2, imageSmall: fotoImg2Small, imageLarge: fotoImg2Large },
 ];
 
 const getTimeLeft = () => {
@@ -535,13 +589,25 @@ function App() {
             <div 
               className="absolute inset-0 flex items-center justify-center cursor-pointer"
               onClick={handleOpenEnvelope}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleOpenEnvelope();
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="Abrir invitación"
             >
               <motion.div 
                 animate={isOpeningAnimation ? { opacity: 0, scale: 1.02 } : { opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 z-20 flex items-center justify-center"
               >
-                <img src={sobrePortada} alt="" className="relative z-10 h-full w-full object-cover object-center pointer-events-none" />
+                <picture className="relative z-10 h-full w-full">
+                  <source srcSet={`${sobrePortada640} 640w, ${sobrePortada} 1080w`} sizes="100vw" type="image/webp" />
+                  <img src={sobrePortada} alt="" width="768" height="1365" fetchPriority="high" decoding="async" className="h-full w-full object-cover object-center pointer-events-none" />
+                </picture>
               </motion.div>
 
               <motion.span 
@@ -557,10 +623,10 @@ function App() {
       </AnimatePresence>
 
       {/* 🌟 Fondo de Partículas */}
-      <BackgroundParticles />
+      <BackgroundParticles active={introStep === 3} />
       <PageCornerSparkles />
       <CursorSparkles active={introStep === 3} />
-      <audio ref={audioRef} src={audioSong} loop />
+      <audio ref={audioRef} src={audioSong} loop preload="none" />
       {introStep === 3 && (
         <button
           type="button"
@@ -573,8 +639,8 @@ function App() {
       )}
 
       {/* 🌸 FLORES EN BORDES (en capa z-10 en los bordes para no tapar texto) */}
-      <motion.img initial={{ opacity: 0, y: -16 }} animate={introStep === 3 ? { opacity: 0.9, y: 0 } : { opacity: 0, y: -16 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }} src={superiorDerecho} alt="" className="absolute top-0 left-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
-      <motion.img initial={{ opacity: 0, y: -16 }} animate={introStep === 3 ? { opacity: 0.9, y: 0 } : { opacity: 0, y: -16 }} transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }} src={superiorIzquierdo} alt="" className="absolute top-0 right-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
+      <motion.img initial={{ opacity: 0, y: -16 }} animate={introStep === 3 ? { opacity: 0.9, y: 0 } : { opacity: 0, y: -16 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }} src={superiorDerecho} alt="" loading="lazy" decoding="async" className="absolute top-0 left-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
+      <motion.img initial={{ opacity: 0, y: -16 }} animate={introStep === 3 ? { opacity: 0.9, y: 0 } : { opacity: 0, y: -16 }} transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }} src={superiorIzquierdo} alt="" loading="lazy" decoding="async" className="absolute top-0 right-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
       {/* Contenedor principal con flujo continuo (sin cuadros) */}
       <div className="invitation-main relative z-20 flex w-full flex-col px-4 pb-36 gap-8 text-center items-center sm:px-12 lg:px-20">
 
@@ -589,6 +655,11 @@ function App() {
             variants={heroItem} 
             src={ovalMarco} 
             alt="Marco Ovalado" 
+            width="675"
+            height="1200"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-contain pointer-events-none z-10" 
           />
 
@@ -597,6 +668,11 @@ function App() {
               variants={heroItem}
               src={coronaImg} 
               alt="Corona" 
+              width="683"
+              height="463"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="mb-1 h-auto w-[clamp(12rem,42vw,20rem)] max-w-full object-contain drop-shadow-sm" 
             />
             
@@ -668,9 +744,9 @@ function App() {
                   <span className="font-serif text-sm font-semibold uppercase tracking-[0.25em] text-[#6b5b72] sm:text-base">Mis Padres</span>
                   <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#d4af37]/60" />
                 </div>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">María Luisa Gregorio</p>
+                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">MARIA LUISA GREGORIO BOLAÑOS</p>
                 <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">Santiago Ojeda</p>
+                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">SANTIAGO OJEDA SANCHEZ</p>
               </motion.div>
 
               <span
@@ -687,6 +763,8 @@ function App() {
                 <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">Laura Gregorio</p>
                 <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
                 <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">Martín Durán</p>
+                <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
+                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#4a3e4d]">JOSÉ MANUEL OLIVARES GARAY</p>
               </motion.div>
             </div>
           </section>
@@ -758,13 +836,18 @@ function App() {
                           <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/50 to-transparent" />
                           <div className="relative overflow-hidden rounded-[20px] border border-white/70 aspect-[3/4] sm:aspect-[4/5]">
                             {slide.image ? (
-                              <motion.img
-                                src={slide.image}
-                                alt={slide.title}
-                                className="absolute inset-0 h-full w-full object-cover"
-                                animate={isActive ? { scale: [1, 1.04, 1] } : { scale: 1 }}
-                                transition={{ duration: 8, repeat: isActive ? Infinity : 0, repeatType: 'mirror', ease: 'easeInOut' }}
-                              />
+                              <picture className="absolute inset-0 h-full w-full">
+                                <source srcSet={`${slide.imageSmall} 480w, ${slide.imageLarge} 800w`} sizes="(max-width: 640px) 68vw, 420px" type="image/webp" />
+                                <motion.img
+                                  src={slide.image}
+                                  alt={slide.title}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="h-full w-full object-cover"
+                                  animate={isActive ? { scale: [1, 1.04, 1] } : { scale: 1 }}
+                                  transition={{ duration: 8, repeat: isActive ? Infinity : 0, repeatType: 'mirror', ease: 'easeInOut' }}
+                                />
+                              </picture>
                             ) : (
                               <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(212,175,55,0.16),transparent_30%),radial-gradient(circle_at_75%_75%,rgba(182,149,192,0.22),transparent_38%),linear-gradient(180deg,#faf7fb,#f1e8f4)]" />
                             )}
@@ -931,6 +1014,8 @@ function App() {
                 {...piece(fromLeft)}
                 src={itinerario1}
                 alt=""
+                loading="lazy"
+                decoding="async"
                 whileHover={{ y: -6, rotate: -4, scale: 1.06 }}
                 className="mb-2 h-40 w-40 max-w-full object-contain sm:h-60 sm:w-60 lg:h-64 lg:w-64"
               />
@@ -958,11 +1043,13 @@ function App() {
                 {...piece(fromRight)}
                 src={itinerario2}
                 alt=""
+                loading="lazy"
+                decoding="async"
                 whileHover={{ y: -6, rotate: 4, scale: 1.06 }}
                 className="mb-2 h-40 w-40 max-w-full object-contain sm:h-60 sm:w-60 lg:h-64 lg:w-64"
               />
-              <motion.h3 {...piece(fromTop)} className="font-serif text-2xl sm:text-3xl font-medium text-[#4a3e4d] tracking-[0.2em] uppercase">Recepción</motion.h3>
-              <motion.p {...piece(fromRight)} className="font-serif text-xl sm:text-2xl text-gray-700">Recepción / Salón de Eventos</motion.p>
+              <motion.h3 {...piece(fromTop)} className="font-serif text-2xl sm:text-3xl font-medium text-[#4a3e4d] tracking-[0.2em] uppercase">Auditorio de San Agustín</motion.h3>
+              <motion.p {...piece(fromRight)} className="font-serif text-xl sm:text-2xl text-gray-700">Auditorio de San Agustín</motion.p>
               <motion.p {...piece(zoomIn)} className="text-xl sm:text-2xl font-semibold text-[#4a3e4d]">🕒 4:00 PM</motion.p>
               <motion.a
                 {...piece(fromBottom)}
@@ -989,7 +1076,7 @@ function App() {
             <div className="itinerary-list relative my-2 flex w-fit max-w-full mx-auto flex-col gap-7 border-l border-[#b695c0]/40 pl-7 text-left sm:pl-9">
               {[
                 { img: itinerario1, hora: '2:00 PM', texto: 'Ceremonia Religiosa', giro: -5, anim: fromLeft },
-                { img: itinerario2, hora: '4:00 PM', texto: 'Recepción', giro: 5, anim: dropRotate },
+                { img: itinerario2, hora: '4:00 PM', texto: 'Auditorio de San Agustín', giro: 5, anim: dropRotate },
                 { img: itinerario3, hora: '6:00 PM', texto: 'Cena', giro: -5, anim: zoomIn },
                 { img: itinerario4, hora: '8:00 PM', texto: 'Vals Principal', giro: 5, anim: fromBottom },
                 { img: itinerario5, hora: '10:00 PM', texto: 'Apertura de Pista', giro: -5, anim: fromLeft },
@@ -1006,6 +1093,8 @@ function App() {
                     {...piece(item.anim)}
                     src={item.img}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     whileHover={{ scale: 1.1, y: -4, rotate: item.giro }}
                     className="itinerary-image h-20 w-20 shrink-0 object-contain sm:h-32 sm:w-32 drop-shadow-[0_10px_18px_rgba(107,91,114,0.12)]"
                   />
@@ -1032,6 +1121,8 @@ function App() {
                 {...piece(dropRotate)}
                 src={iconoRegalo}
                 alt=""
+                loading="lazy"
+                decoding="async"
                 whileHover={{ y: -6, rotate: 4, scale: 1.06 }}
                 className="mb-2 h-40 w-40 max-w-full object-contain sm:h-60 sm:w-60 lg:h-64 lg:w-64"
               />
@@ -1070,8 +1161,8 @@ function App() {
       </div>
 
       {/* FLORES INFERIORES (en capa z-10 para no tapar texto) */}
-      <motion.img initial={{ opacity: 0, y: 12 }} animate={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} src={inferiorIzquierdo} alt="" className="absolute bottom-0 left-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
-      <motion.img initial={{ opacity: 0, y: 12 }} animate={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} src={inferiorDerecho} alt="" className="absolute bottom-0 right-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
+      <motion.img initial={{ opacity: 0, y: 12 }} animate={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} src={inferiorIzquierdo} alt="" loading="lazy" decoding="async" className="absolute bottom-0 left-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
+      <motion.img initial={{ opacity: 0, y: 12 }} animate={{ opacity: 0, y: 12 }} whileInView={{ opacity: 0.85, y: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} src={inferiorDerecho} alt="" loading="lazy" decoding="async" className="absolute bottom-0 right-0 w-28 sm:w-36 lg:w-44 pointer-events-none z-10" />
     </div>
   );
 }
