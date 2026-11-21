@@ -71,6 +71,11 @@ body {
   scroll-margin-top: env(safe-area-inset-top);
 }
 
+
+.scroll-reveal { opacity:0; transform:translate3d(0,28px,0); transition:opacity .55s ease, transform .55s ease; will-change:opacity,transform; }
+.scroll-reveal.is-visible { opacity:1; transform:translate3d(0,0,0); }
+.scroll-reveal.exit-top { opacity:0; transform:translate3d(0,-28px,0); }
+.scroll-reveal.exit-bottom { opacity:0; transform:translate3d(0,28px,0); }
 .hero-butterfly--left {
   left: calc(50% - 3rem);
 }

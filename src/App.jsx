@@ -369,14 +369,49 @@ const EventCalendar = ({ sectionItem }) => {
   );
 };
 
-const FadeAway = ({ children }) => (
-  <div className="snap-section relative isolate flex w-full flex-col items-center justify-center">
-    <SectionSparkles />
-    <div className="relative z-10 flex w-full flex-col items-center justify-center">
-      {children}
+const useScrollReveal = (ref) => {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+
+    el.classList.add('scroll-reveal');
+
+    const update = (entry) => {
+      el.classList.remove('is-visible', 'exit-top', 'exit-bottom');
+      if (entry.isIntersecting) {
+        el.classList.add('is-visible');
+        return;
+      }
+      if (entry.boundingClientRect.top < 0) {
+        el.classList.add('exit-top');
+      } else {
+        el.classList.add('exit-bottom');
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => update(entry), {
+      threshold: 0.12,
+      rootMargin: '0px 0px -8% 0px',
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+};
+
+const FadeAway = ({ children }) => {
+  const ref = useRef(null);
+  useScrollReveal(ref);
+
+  return (
+    <div ref={ref} className="snap-section relative isolate flex w-full flex-col items-center justify-center">
+      <SectionSparkles />
+      <div className="relative z-10 flex w-full flex-col items-center justify-center">
+        {children}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EVENT_DATE = new Date(2026, 11, 26, 14, 0, 0); // 26 de diciembre de 2026, 2:00 PM
 const WHATSAPP_NUMBER = '525532307675'; // Número de prueba (cámbialo luego por el definitivo, con lada/país)
@@ -418,7 +453,9 @@ function App() {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const audioRef = useRef(null);
   const galleryRef = useRef(null);
+  const rsvpRef = useRef(null);
   const isGalleryVisible = useInView(galleryRef, { amount: 0.01 });
+  useScrollReveal(rsvpRef);
   const stopMusic = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -515,14 +552,8 @@ function App() {
   const shouldReduceMotion = useReducedMotion();
 
   const sectionItem = {
-    hidden: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: shouldReduceMotion
-        ? { duration: 0.25 }
-        : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
-    }
+    hidden: { opacity: 1, y: 0 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0 } },
   };
 
   const heroRevealFromBehind = {
@@ -546,18 +577,10 @@ function App() {
     }
   };
   const pieceViewport = { once: false, amount: 0.15 };
-  const pieceEase = [0.22, 1, 0.36, 1];
 
   const elegantPiece = {
-    hidden: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.985 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      scale: 1,
-      rotate: 0,
-      transition: { duration: shouldReduceMotion ? 0.25 : 0.6, ease: pieceEase, delay: 0 },
-    },
+    hidden: { opacity: 1, y: 0, scale: 1, rotate: 0, filter: 'blur(0px)' },
+    visible: { opacity: 1, y: 0, scale: 1, rotate: 0, filter: 'blur(0px)', transition: { duration: 0 } },
   };
 
   const fromTop = elegantPiece;
@@ -1144,6 +1167,7 @@ function App() {
 
         {/* 7️⃣ CONFIRMACIÓN RSVP */}
         <section
+          ref={rsvpRef}
           style={{ perspective: 1000 }}
           className="snap-section relative isolate w-full max-w-[600px] flex flex-col items-center gap-3 py-2"
         >
