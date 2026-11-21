@@ -737,7 +737,7 @@ function App() {
               Y el amor incondicional de mis padres y padrinos
             </motion.p>
 
-            <div className="mt-2 flex w-full max-w-[620px] flex-col items-center gap-6 px-2 sm:flex-row sm:justify-center sm:gap-10">
+            <div className="mt-2 flex w-full max-w-[620px] flex-col items-center gap-7 px-2 sm:flex-row sm:items-start sm:justify-center sm:gap-8">
               <motion.div {...piece(fromLeft)} className="flex flex-col items-center text-center">
                 <div className="mb-2 flex items-center justify-center gap-3 text-[#b695c0]/70">
                   <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#d4af37]/60" />
@@ -754,17 +754,19 @@ function App() {
                 className="h-px w-24 bg-gradient-to-r from-transparent via-[#b695c0]/45 to-transparent sm:h-28 sm:w-px sm:bg-gradient-to-b"
               />
 
-              <motion.div {...piece(fromRight)} className="flex flex-col items-center text-center">
-                <div className="mb-2 flex items-center justify-center gap-3 text-[#b695c0]/70">
-                  <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#d4af37]/60" />
-                  <span className="font-serif text-sm font-semibold uppercase tracking-[0.25em] text-[#6b5b72] sm:text-base">Mis Padrinos</span>
-                  <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#d4af37]/60" />
+              <motion.div {...piece(fromRight)} className="flex w-full max-w-[280px] flex-col items-center text-center sm:w-[280px]">
+                <div className="mb-3 flex w-full items-center justify-center gap-3 text-[#b695c0]/70">
+                  <span className="h-px w-8 shrink-0 bg-gradient-to-r from-transparent to-[#d4af37]/60" />
+                  <span className="whitespace-nowrap font-serif text-sm font-semibold uppercase tracking-[0.25em] text-[#6b5b72] sm:text-base">Mis Padrinos</span>
+                  <span className="h-px w-8 shrink-0 bg-gradient-to-l from-transparent to-[#d4af37]/60" />
                 </div>
-                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">Laura Gregorio</p>
-                <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
-                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">Martín Durán</p>
-                <span className="my-1 font-serif text-lg italic leading-none text-[#b695c0] sm:text-xl">&amp;</span>
-                <p className="font-serif text-[clamp(1.25rem,5vw,1.875rem)] leading-tight font-medium text-[#4a3e4d]">JOSÉ MANUEL OLIVARES GARAY</p>
+                <div className="flex w-full flex-col items-center gap-0.5 rounded-[18px] border border-[#d7c3df]/45 px-3 py-3 sm:px-4">
+                  <p className="font-serif text-[1.125rem] leading-snug font-medium text-[#4a3e4d] sm:text-xl">Laura Gregorio</p>
+                  <span className="font-serif text-base italic leading-none text-[#b695c0] sm:text-lg">&amp;</span>
+                  <p className="font-serif text-[1.125rem] leading-snug font-medium text-[#4a3e4d] sm:text-xl">Martín Durán</p>
+                  <span className="font-serif text-base italic leading-none text-[#b695c0] sm:text-lg">&amp;</span>
+                  <p className="font-serif text-[1.125rem] leading-snug font-medium text-[#4a3e4d] sm:text-xl">JOSÉ MANUEL OLIVARES GARAY</p>
+                </div>
               </motion.div>
             </div>
           </section>
